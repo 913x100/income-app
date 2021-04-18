@@ -16,6 +16,7 @@ func main() {
 	}))
 
 	e.POST("/income", AddIncome)
+	e.GET("/income", GetIncome)
 
 	e.Logger.Fatal(e.Start(":3002"))
 	
