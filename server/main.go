@@ -51,6 +51,8 @@ type Expense struct {
 
 func AddIncome(c echo.Context) error {
 	var income Income
+	var expense Expense
+	
 	if err := c.Bind(&income); err != nil {
 		log.Error(err)
 		return c.String(http.StatusInternalServerError, err.Error())
@@ -63,6 +65,7 @@ func AddIncome(c echo.Context) error {
 	}
 
 	db.Create(&income)
+	db.Create(&expense)
 
 	return c.String(http.StatusOK, "add success")
 }
