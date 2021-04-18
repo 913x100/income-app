@@ -67,13 +67,14 @@ const Expense = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={onSubmitExpense}>
+    <div className='bg-white md:max-w-4xl rounded-lg shadow p-6 mx-3'>
+      <form onSubmit={onSubmitExpense} className='flex'>
         <input
           type='text'
           name='expenseText'
           value={expenseText}
           placeholder='Add Expense...'
+          className='appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mx-1 leading-tight focus:outline-none focus:bg-white'
           onChange={onChangeExpense}
         ></input>
         <input
@@ -81,14 +82,19 @@ const Expense = () => {
           name='expenseAmount'
           value={expenseAmount}
           placeholder='Amount'
+          className='appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mx-1 leading-tight focus:outline-none focus:bg-white'
           onChange={onChangeExpense}
         />
-        <input type='submit' value='Submit' />
+        <input
+          type='submit'
+          value='Submit'
+          className='bg-blue-500 px-4 py-2 text-xs font-semibold tracking-wider text-white rounded hover:bg-blue-600'
+        />
       </form>
       {expenseList.map((data) => (
-        <p>
+        <div className='flex justify-between items-center h-16 p-4 my-6  rounded-lg border border-gray-100 shadow-md'>
           {data.text} | {data.amount}
-        </p>
+        </div>
       ))}
     </div>
   );

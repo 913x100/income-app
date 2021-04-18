@@ -67,13 +67,14 @@ const Income = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={onSubmitIncome}>
+    <div className='bg-white md:max-w-4xl rounded-lg shadow p-6 mx-3'>
+      <form onSubmit={onSubmitIncome} className='flex'>
         <input
           type='text'
           name='incomeText'
           value={incomeText}
           placeholder='Add Income...'
+          className='p-1 px-2 appearance-none outline-none w-full text-gray-800'
           onChange={onChangeIncome}
         ></input>
         <input
@@ -81,15 +82,23 @@ const Income = () => {
           name='incomeAmount'
           value={incomeAmount}
           placeholder='Amount'
+          className='p-1 px-2 appearance-none outline-none w-full text-gray-800'
           onChange={onChangeIncome}
         />
-        <input type='submit' value='Submit' />
+        <input
+          type='submit'
+          value='Submit'
+          className='bg-blue-500 px-4 py-2 text-xs font-semibold tracking-wider text-white rounded hover:bg-blue-600'
+        />
       </form>
-      {incomeList.map((data) => (
-        <p>
-          {data.text} | {data.amount}
-        </p>
-      ))}
+
+      <div>
+        {incomeList.map((data) => (
+          <div className='flex justify-between items-center h-16 p-4 my-6  rounded-lg border border-gray-100 shadow-md'>
+            {data.text} | {data.amount}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
