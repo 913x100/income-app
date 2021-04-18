@@ -1,11 +1,13 @@
 import React from 'react';
 
-import AddTrasaction from './components/AddTransaction';
+import Income from './components/Income';
+import Expense from './components/Expense';
 
 function App() {
   return (
     <div className='App'>
-      <AddTrasaction />
+      <Income />
+      <Expense />
     </div>
   );
 }

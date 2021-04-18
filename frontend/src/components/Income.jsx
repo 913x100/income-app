@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const URL = 'http://localhost:3002';
 
-const AddTransaction = () => {
+const Income = () => {
   const [income, setIncome] = useState({
     incomeText: '',
     incomeAmount: 0,
@@ -94,4 +94,4 @@ const AddTransaction = () => {
   );
 };
 
-export default AddTransaction;
+export default Income;
