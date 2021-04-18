@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 
-const URL = 'http:localhost:3002';
+const URL = 'http://localhost:3002';
 
 const AddTransaction = () => {
   const [income, setIncome] = useState({
@@ -14,8 +14,21 @@ const AddTransaction = () => {
 
   const { incomeText, incomeAmount } = income;
 
+  const getIncomes = () => {
+    axios
+      .get(`${URL}/income`)
+      .then((res) => {
+        if (res.data != null) {
+          setIncomeList(res.data);
+        }
+      })
+      .catch((err) => console.error(`error : ${err}`));
+  };
+
   useEffect(() => {
     getIncomes();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addIncome = (newIncome) => {
@@ -25,20 +38,9 @@ const AddTransaction = () => {
         text: newIncome.incomeText,
         amount: newIncome.incomeAmount,
       })
-      .then((res) => {
-        console.log(res.data);
+      .then(() => {
         getIncomes();
       });
-  };
-
-  const getIncomes = () => {
-    axios
-      .get(`${URL}/income`)
-      .then((res) => {
-        console.log(res.data);
-        setIncomeList(res.data);
-      })
-      .catch((err) => console.error(`error : ${err}`));
   };
 
   const onChangeIncome = (e) => {
@@ -69,15 +71,24 @@ const AddTransaction = () => {
       <form onSubmit={onSubmitIncome}>
         <input
           type='text'
+          name='incomeText'
           value={incomeText}
           placeholder='Add Income...'
           onChange={onChangeIncome}
         ></input>
+        <input
+          type='number'
+          name='incomeAmount'
+          value={incomeAmount}
+          placeholder='Amount'
+          onChange={onChangeIncome}
+        />
         <input type='submit' value='Submit' />
       </form>
-
       {incomeList.map((data) => (
-        <p>data</p>
+        <p>
+          {data.text} | {data.amount}
+        </p>
       ))}
     </div>
   );

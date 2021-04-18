@@ -5,18 +5,29 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"github.com/labstack/gommon/log"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
 func main() {
+	db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
+	if err != nil {
+    panic("failed to connect database")
+  }
+
+	db.AutoMigrate(&Income{})
+
 	e := echo.New()
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"*"},
 		AllowMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},
 	}))
-
+	
+	e.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Ok")
+	})
 	e.POST("/income", AddIncome)
 	e.GET("/income", GetIncome)
 
@@ -32,14 +43,15 @@ type Income struct {
 
 func AddIncome(c echo.Context) error {
 	var income Income
-
-	if err := c.Bind(income); err != nil {
-		return err
+	if err := c.Bind(&income); err != nil {
+		log.Error(err)
+		return c.String(http.StatusInternalServerError, err.Error())
 	}
 
 	db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 	if err != nil {
-		return c.String(http.StatusInternalServerError, "there are errors")
+		log.Error(err)
+		return c.String(http.StatusInternalServerError, err.Error())
 	}
 
 	db.Create(&income)
@@ -48,14 +60,14 @@ func AddIncome(c echo.Context) error {
 }
 
 func GetIncome(c echo.Context) error {
-	var incomes []Income
+	var income []Income
 
 	db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 	if err != nil {
 		return err
 	}
 
-	db.Find(&incomes)
+	db.Find(&income)
 
-	return c.JSON(http.StatusOK, incomes)
+	return c.JSON(http.StatusOK, income)
 }
